@@ -3,7 +3,7 @@ class Game
     @board, @robot = board, robot
   end
 
-  def place_robot(coordinates)
+  def place_robot(coordinates) # this should be private
     position = Position.new
 
     position.x = coordinates[0].to_i
@@ -38,9 +38,9 @@ class Game
     end
   end
 
-  def generate_report
+  def generate_report # this should be private
     puts "Output: #{@robot.position}"
 
-    return @robot.position.to_s
+    return @robot.position.to_s # no need to return anything here, since we just print report here
   end
 end

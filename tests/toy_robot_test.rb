@@ -13,6 +13,8 @@ class ToyRobotTest < Test::Unit::TestCase
     @game = Game.new(@board, @robot)
   end
 
+  # we should test public interface and not implementation details,
+  # so instead of #place_robot we should test @game.eval('PLACE 0,0,NORTH')
   def test_first
     @game.place_robot(['0', '0', 'NORTH'])
     @robot.move
