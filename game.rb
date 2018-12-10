@@ -3,20 +3,6 @@ class Game
     @board, @robot = board, robot
   end
 
-  def place_robot(coordinates) # this should be private
-    position = Position.new
-
-    position.x = coordinates[0].to_i
-    position.y = coordinates[1].to_i
-    position.direction = coordinates[2]
-
-    if @board.valid_position(position)
-      @robot.position = position
-    else
-      raise 'Invalid placed position...'
-    end
-  end
-
   def eval(command)
     execute = command.split.first
 
@@ -38,9 +24,19 @@ class Game
     end
   end
 
-  def generate_report # this should be private
-    puts "Output: #{@robot.position}"
+  private
 
-    return @robot.position.to_s # no need to return anything here, since we just print report here
+  def place_robot(coordinates)
+    position = Position.new(coordinates[0].to_i, coordinates[1].to_i, coordinates[2])
+
+    if @board.valid_position?(position)
+      @robot.position = position
+    else
+      raise 'Invalid placed position...'
+    end
+  end
+
+  def generate_report
+    puts "Output: #{@robot.position}"
   end
 end

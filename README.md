@@ -3,7 +3,7 @@
 ## Requirements
 
 - Implemented and tested using ruby 2.4.1
-- Tests require `test/unit`
+- Tests require `minitest`
 
 ## Compile, Test, Run and Packaging
 

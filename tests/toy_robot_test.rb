@@ -4,40 +4,63 @@ require_relative '../game'
 require_relative '../command'
 require_relative '../direction'
 
-require 'test/unit'
+require 'minitest/spec'
+require 'minitest/autorun'
  
-class ToyRobotTest < Test::Unit::TestCase
+class ToyRobotTest < Minitest::Test
   def setup
     @board = Board.new(5, 5)
     @robot = ToyRobot.new(@board)
     @game = Game.new(@board, @robot)
   end
 
-  # we should test public interface and not implementation details,
-  # so instead of #place_robot we should test @game.eval('PLACE 0,0,NORTH')
   def test_first
-    @game.place_robot(['0', '0', 'NORTH'])
-    @robot.move
+    @game.eval('PLACE 0,0,NORTH')
+    @game.eval('MOVE')
 
-    assert_equal('0,1,NORTH', @game.generate_report)
+    assert_output(/Output: 0,1,NORTH/) { @game.eval('REPORT') }
   end
 
   def test_second
-    @game.place_robot(['0', '0', 'NORTH'])
+    @game.eval('PLACE 0,0,NORTH')
+    @game.eval('LEFT')
 
-    @robot.rotate_left
-
-    assert_equal('0,0,WEST', @game.generate_report)
+    assert_output(/Output: 0,0,WEST/) { @game.eval('REPORT') }
   end
 
   def test_last
-    @game.place_robot(['1', '2', 'EAST'])
+    @game.eval('PLACE 1,2,EAST')
+    @game.eval('MOVE')
+    @game.eval('MOVE')
+    @game.eval('LEFT')
+    @game.eval('MOVE')
 
-    @robot.move
-    @robot.move
-    @robot.rotate_left
-    @robot.move
+    assert_output(/Output: 3,3,NORTH/) { @game.eval('REPORT') }
+  end
 
-    assert_equal('3,3,NORTH', @game.generate_report)
+  def test_left_rotation
+    @game.eval('PLACE 0,0,NORTH')
+
+    # rotate robot on 360 degrees
+    @game.eval('LEFT')
+    @game.eval('LEFT')
+    @game.eval('LEFT')
+    @game.eval('LEFT')
+
+    # assert the same direction
+    assert_output(/Output: 0,0,NORTH/) { @game.eval('REPORT') }
+  end
+
+  def test_right_rotation
+    @game.eval('PLACE 0,0,NORTH')
+
+    # rotate robot on 360 degrees
+    @game.eval('RIGHT')
+    @game.eval('RIGHT')
+    @game.eval('RIGHT')
+    @game.eval('RIGHT')
+
+    # assert the same direction
+    assert_output(/Output: 0,0,NORTH/) { @game.eval('REPORT') }
   end
 end
